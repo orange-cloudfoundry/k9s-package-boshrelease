@@ -14,7 +14,6 @@
     // don't run on renovate branches
     "$default",
     "/^release-.*/",  //regexp test syntax
-    "/^upstream-release-1\..*/"
     // See https://docs.renovatebot.com/configuration-options/#basebranches
     // baseBranches supports Regular Expressions that must begin and end with /
   ], //See also possible support for multiple base branches, one per K8S minor version https://docs.renovatebot.com/configuration-options/#basebranches
@@ -31,15 +30,6 @@
       ],
     },
     {
-      description: 'Get distinct branches for each minor, e.g. 1.22.x and 1.23.x. See https://docs.renovatebot.com/presets-default/#separatepatchreleases and https://docs.renovatebot.com/faq/#separate-patch-releases-from-minor-releases',
-      matchPackageNames: [
-        'k3s-io/k3s',
-      ],
-      separateMinorPatch: true,
-      versioning: "semver",
-      //separateMultipleMinor: true, // Pending merge of https://github.com/renovatebot/renovate/pull/24538 to be effective
-    },
-    {
       description: "Add common labels",
       matchDepPatterns: ["*"],
       addLabels: [
@@ -47,21 +37,8 @@
         "datasource/{{datasource}}",
         "depName/{{depNameSanitized}}",
         "manager/{{manager}}",
-        "hasReleaseNotes/{{hasReleaseNotes}}",
-        "target/{{baseBranch}}", // To easily filter PR on base branch, like all PR related to k3s 1.25
       ]
     },
-    {
-      description: 'Kubectl: Get distinct branches for each minor, e.g. 1.22.x and 1.23.x. See https://docs.renovatebot.com/presets-default/#separatepatchreleases and https://docs.renovatebot.com/faq/#separate-patch-releases-from-minor-releases',
-      matchPackageNames: [
-        'kubernetes/kubernetes',
-      ],
-      separateMinorPatch: true,
-      addLabels: [
-        "depName/kubernetes-kubectl", //override common labels for kubectl, as we have to scan kubernetes releases
-      ]
-      //separateMultipleMinor: true, // Pending merge of https://github.com/renovatebot/renovate/pull/24538 to be effective
-    }
   ],
   regexManagers: [
     {
