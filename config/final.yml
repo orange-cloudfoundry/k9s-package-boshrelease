@@ -2,5 +2,5 @@
 blobstore:
   provider: s3
   options:
-    bucket_name: orange-k3s-boshrelease
-final_name: k3s
+    bucket_name: orange-k9s-package-boshrelease
+final_name: k9s-package

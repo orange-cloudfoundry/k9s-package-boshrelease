@@ -1,5 +1,0 @@
-check process k3s-agent
-  with pidfile /var/vcap/sys/run/k3s-agent/pid
-  start program "/var/vcap/jobs/k3s-agent/bin/ctl start"
-  stop program "/var/vcap/jobs/k3s-agent/bin/ctl stop"
-  group vcap

@@ -1,5 +1,0 @@
-check process k3s-server
-  with pidfile /var/vcap/sys/run/k3s-server/pid
-  start program "/var/vcap/jobs/k3s-server/bin/ctl start"
-  stop program "/var/vcap/jobs/k3s-server/bin/ctl stop"
-  group vcap
