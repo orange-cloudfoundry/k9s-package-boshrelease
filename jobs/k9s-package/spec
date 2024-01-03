@@ -1,0 +1,5 @@
+---
+name: k9s-package
+
+packages:
+- k9s 
