@@ -96,7 +96,7 @@ jobs:
           fi
       - name: Extract k9s version
         id: extract_version
-        uses: orange-cloudfoundry/extract-vendir-version-action@0.1.0
+        uses: orange-cloudfoundry/extract-vendir-version-action@v0.1.0
         with:
           library: "derailed/k9s"
       - name: create bosh final release
