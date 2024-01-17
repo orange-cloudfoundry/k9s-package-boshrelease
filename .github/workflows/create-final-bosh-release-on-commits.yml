@@ -1,13 +1,21 @@
-name: vendor-add-blob-create-dev-release
+name: create-final-bosh-release
 
+permissions:
+  contents: write # allow git push to repo and the github release and its artefact
 on:
   push:
     branches:
       - master
-      - release-*
       # See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#filter-pattern-cheat-sheet
       # *: Matches zero or more characters, but does not match the / character. For example, Octo* matches Octocat.
       # **: Matches zero or more of any character.
+    paths: # only trigger on bosh-relevant changes
+      - .final_builds/**
+      - config/**
+      - jobs/**
+      - releases/**
+      - vendir.yml
+      - .github/workflows/create-final-bosh-release-on-commits.yml
 
 jobs:
   build:
@@ -61,11 +69,13 @@ jobs:
           #pwd
           #find .
           # configure git
-          git config --global user.name "actions/k3s-boshrelease"
+          git config --global user.name "workflows/k9s-package/create-final-bosh-release"
           git config --global user.email "<>"
           git config --global --add safe.directory /github/workspace
           export VENDIR_GITHUB_API_TOKEN="${GITHUB_TOKEN}"
           ./vendor.sh
+          echo "State after vendir:"
+          tree -s src
           git add vendir.lock
           # FIXME: optimize for idempotency 
           ./addblob.sh
@@ -79,36 +89,42 @@ jobs:
           else
             echo "Nothing to commit"
           fi
+          echo "Resulting State:" 
           tree -s src
           if [ -d blobs ];then # The blobs dir is only present when a blob is modified or has not yet been published.
             tree -s blobs
           fi
-      
-
-      # TODO: optimize to only create a dev release if the blobs.yaml file has some changes
-      # Possibly by setting an env var and checking it into next step
-      # See https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
-      # and if clause https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsif
-      - name: create bosh dev release
+      - name: Extract k9s version
+        id: extract_version
+        uses: orange-cloudfoundry/extact-vendir-version-action@0.1.0
+        with:
+          library: "derailed/k9s"
+      - name: create bosh final release
         id: create-bosh-release
-        uses: orange-cloudfoundry/bosh-release-action@v2 # will create dev release when pushed git ref is not a tag
+        uses: orange-cloudfoundry/create-bosh-release-action@master
         with:
           target_branch: ${{github.ref_name}}
+          tag_name: ${{ steps.extract_version.outputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AWS_BOSH_ACCES_KEY_ID: ${{ secrets.AWS_BOSH_ACCES_KEY_ID }}
           AWS_BOSH_SECRET_ACCES_KEY: ${{ secrets.AWS_BOSH_SECRET_ACCES_KEY }}
 
-      # See https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts
-      # This creates a zip file containing the k3s-master.tgz file
-
-      # See https://github.com/actions/upload-artifact#zipped-artifact-downloads
-      # > There is currently no way to download artifacts after a workflow run finishes in a format other than a zip or
-      # > to download artifact contents individually. One of the consequences of this limitation is that if a zip is
-      # > uploaded during a workflow run and then downloaded from the UI, there will be a double zip created.
-      - name: Archive bosh dev release tgz
-        uses: actions/upload-artifact@v3
+      # see https://github.com/ncipollo/release-action
+      - name: create github release
+        id: create-github-release
+        if: ${{ steps.create-bosh-release.outputs.need_gh_release == 'true' }}
+        uses: ncipollo/release-action@v1.13.0
         with:
-          name: archive-bosh-dev-release-tgz
-          path: |
-            k3s-*.tgz
+          tag: ${{ steps.create-bosh-release.outputs.version }}
+          draft: false
+          allowUpdates: true # > indicates if we should update a release if it already exists.
+          omitDraftDuringUpdate: true # > Indicates if the draft flag should be omitted during updates. The draft flag will still be applied for newly created releases. This will preserve the existing draft state during updates.
+          generateReleaseNotes: true
+          artifacts: ./${{ steps.create-bosh-release.outputs.file }}
+          artifactContentType: application/zip
+          removeArtifacts: true
+          artifactErrorsFailBuild: true
+
+
+
