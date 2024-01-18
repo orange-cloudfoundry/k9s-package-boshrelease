@@ -116,7 +116,7 @@ jobs:
         if: ${{ steps.create-bosh-release.outputs.need_gh_release == 'true' }}
         uses: ncipollo/release-action@v1.13.0
         with:
-          tag: ${{ steps.create-bosh-release.outputs.version }}
+          tag: ${{ steps.create-bosh-release.outputs.tagged_version }}
           draft: false
           allowUpdates: true # > indicates if we should update a release if it already exists.
           omitDraftDuringUpdate: true # > Indicates if the draft flag should be omitted during updates. The draft flag will still be applied for newly created releases. This will preserve the existing draft state during updates.
