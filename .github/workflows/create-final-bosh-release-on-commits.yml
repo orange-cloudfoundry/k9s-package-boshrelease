@@ -101,7 +101,7 @@ jobs:
           library: "derailed/k9s"
       - name: create bosh final release
         id: create-bosh-release
-        uses: orange-cloudfoundry/create-bosh-release-action@master
+        uses: orange-cloudfoundry/create-bosh-release-action@v1.0.1
         with:
           target_branch: ${{github.ref_name}}
           tag_name: ${{ steps.extract_version.outputs.version }}
