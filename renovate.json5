@@ -30,6 +30,8 @@
         'bump-from/vendir',
       ],
       automerge: true,
+      //see https://docs.renovatebot.com/key-concepts/automerge/#absence-of-tests
+      ignoreTests: true
     },
     {
       description: "Add common labels",
