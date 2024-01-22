@@ -22,14 +22,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           fetch-depth: 0
 
       # TODO: add caching for cli downloads, see https://github.com/marketplace/actions/cache
       - name: Install bosh-cli
         #See https://github.com/marketplace/actions/install-a-binary-from-github-releases
-        uses: jaxxstorm/action-install-gh-release@v1.10.0
+        uses: jaxxstorm/action-install-gh-release@c5ead9a448b4660cf1e7866ee22e4dc56538031a # v1.10.0
         with:
           repo: cloudfoundry/bosh-cli
           tag: v7.4.0
@@ -42,7 +42,7 @@ jobs:
 
       - name: Install vendir cli
         #See https://github.com/marketplace/actions/install-a-binary-from-github-releases
-        uses: jaxxstorm/action-install-gh-release@v1.10.0
+        uses: jaxxstorm/action-install-gh-release@c5ead9a448b4660cf1e7866ee22e4dc56538031a # v1.10.0
         with:
           repo: carvel-dev/vendir
           tag: v0.34.6
@@ -52,7 +52,7 @@ jobs:
 
       - name: Install yq cli
         #See https://github.com/marketplace/actions/install-a-binary-from-github-releases
-        uses: jaxxstorm/action-install-gh-release@v1.10.0
+        uses: jaxxstorm/action-install-gh-release@c5ead9a448b4660cf1e7866ee22e4dc56538031a # v1.10.0
         with:
           repo: mikefarah/yq
           tag: v4.34.2
@@ -96,12 +96,12 @@ jobs:
           fi
       - name: Extract k9s version
         id: extract_version
-        uses: orange-cloudfoundry/extract-vendir-version-action@v0.2.0
+        uses: orange-cloudfoundry/extract-vendir-version-action@4e0e9300b0a7fe81a02536f631073c2accab9680 # v0.2.0
         with:
           library: "derailed/k9s"
       - name: create bosh final release
         id: create-bosh-release
-        uses: orange-cloudfoundry/create-bosh-release-action@v1.0.1
+        uses: orange-cloudfoundry/create-bosh-release-action@5193049587144e6a0eae076feef0d4270843068b # v1.0.1
         with:
           target_branch: ${{github.ref_name}}
           tag_name: ${{ steps.extract_version.outputs.version }}
@@ -114,7 +114,7 @@ jobs:
       - name: create github release
         id: create-github-release
         if: ${{ steps.create-bosh-release.outputs.need_gh_release == 'true' }}
-        uses: ncipollo/release-action@v1.13.0
+        uses: ncipollo/release-action@6c75be85e571768fa31b40abf38de58ba0397db5 # v1.13.0
         with:
           tag: ${{ steps.create-bosh-release.outputs.tagged_version }}
           draft: false
