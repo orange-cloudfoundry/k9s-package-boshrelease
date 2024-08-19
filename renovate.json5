@@ -32,17 +32,19 @@
       ],
       automerge: true,
       //see https://docs.renovatebot.com/key-concepts/automerge/#absence-of-tests
-      ignoreTests: true
+      ignoreTests: true,
     },
     {
       description: 'Add common labels',
-      matchDepPatterns: ['*'],
       addLabels: [
         // See full list of fields available at https://docs.renovatebot.com/templates/#other-available-fields
         'datasource/{{datasource}}',
         'depName/{{depNameSanitized}}',
         'manager/{{manager}}',
-      ]
+      ],
+      matchDepNames: [
+        '/*/',
+      ],
     },
   ],
   customManagers: [
