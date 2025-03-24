@@ -1,6 +1,6 @@
 ---
 blobstore:
-  provider: s3
+  provider: gcs
   options:
     bucket_name: orange-k9s-package-boshrelease
 final_name: k9s-package
