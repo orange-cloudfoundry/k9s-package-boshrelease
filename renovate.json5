@@ -12,7 +12,7 @@
     'jobs/**',
   ],
   automergeStrategy: 'merge-commit', // use a merge commit so that generated release notes can list the merged PRs
-  baseBranches: [
+  baseBranchPatterns: [
     // don't run on renovate branches
     '$default',
     '/^release-.*/',  //regexp test syntax
@@ -51,8 +51,8 @@
     {
       customType: 'regex',
       description: 'https://regex101.com/r/ms9hZL/1 for matchstring and https://regex101.com/r/NVqoci/1 for version',
-      fileMatch: [
-        'vendir.yml$',
+      managerFilePatterns: [
+        '/vendir.yml$/',
       ],
       matchStrings: [
         ' +githubRelease:\\n +slug: (?<depName>[a-z0-9\\.\\/\\-]*?)\\n +tag: (?<currentValue>[a-z0-9\\.\\/\\-\\+]*?) *\\n',
@@ -62,8 +62,8 @@
     },
     {
       customType: 'regex',
-      fileMatch: [
-        'vendir.yml$',
+      managerFilePatterns: [
+        '/vendir.yml$/',
       ],
       matchStrings: [
         ' +git:\\n +url: https:\\/\\/github\\.com\\/(?<depName>[a-z0-9\\.\\/\\-:]*?)\\n +ref: (?<currentValue>[a-z0-9\\.\\/\\-\\+]*?) *\\n',
