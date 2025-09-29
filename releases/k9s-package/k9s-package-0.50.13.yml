@@ -1,0 +1,21 @@
+name: k9s-package
+version: 0.50.13
+commit_hash: 2d8e585
+uncommitted_changes: true
+jobs:
+- name: k9s-package
+  version: 7761fd2a5895fe0a983bb826b94450cde629392d1721edeccac5a2ef241e4db7
+  fingerprint: 7761fd2a5895fe0a983bb826b94450cde629392d1721edeccac5a2ef241e4db7
+  sha1: sha256:64b3077734cbdcedc63177f6608318d54223c58490eac7bd210a6ec7df6dd515
+  packages:
+  - k9s
+packages:
+- name: k9s
+  version: a521f7ce17d53ee27d57b1fe7b5b61b645c3d2cbeccc1a2710bc0d1669e8e1dd
+  fingerprint: a521f7ce17d53ee27d57b1fe7b5b61b645c3d2cbeccc1a2710bc0d1669e8e1dd
+  sha1: sha256:2499dc108f21e904503d66d47cfd85d05f476ecdfde36fdf465d7865d34dd07e
+  dependencies: []
+license:
+  version: cf0ca1fe65dee9607c7bb9460a3f20835e582cbb7f5b2c3625fba2e21d7e91b9
+  fingerprint: cf0ca1fe65dee9607c7bb9460a3f20835e582cbb7f5b2c3625fba2e21d7e91b9
+  sha1: sha256:3887a4938b1278439037db2d1e572e1450685151eb156f10d38ccc3b22a78dab
