@@ -76,7 +76,7 @@ jobs:
           ./vendor.sh
           echo "State after vendir:"
           tree -s src
-          git add vendir.lock
+          git add vendir.lock*
           # FIXME: optimize for idempotency 
           ./addblob.sh
           remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@${GITHUB_SERVER_URL#https://}/${GITHUB_REPOSITORY}.git"
