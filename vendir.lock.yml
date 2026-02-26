@@ -2,8 +2,8 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - githubRelease:
-      tag: v0.50.16
-      url: https://api.github.com/repos/derailed/k9s/releases/255611391
+      tag: v0.50.18
+      url: https://api.github.com/repos/derailed/k9s/releases/275849211
     path: derailed/k9s
   path: src/github.com
 kind: LockConfig
